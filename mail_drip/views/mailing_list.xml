@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="mass_mailing_list_mail_drip" model="ir.ui.view">
+            <field name="name">mass.mailing.list.mail.drip</field>
+            <field name="model">mailing.list</field>
+            <field name="inherit_id" ref="mass_mailing.mailing_list_view_form"/>
+            <field name="arch" type="xml">
+                <field name='is_public' position="after">
+                    <field name="mail_interval"/>
+                    <field name="mail_interval_type"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

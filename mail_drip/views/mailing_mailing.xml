@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="view_mail_mass_mailing_tree_mail_drip" model="ir.ui.view">
+            <field name="name">mailing.mailing.view.tree.mail.drip</field>
+            <field name="model">mailing.mailing</field>
+            <field name="inherit_id" ref="mass_mailing.view_mail_mass_mailing_tree"/>
+            <field name="arch" type="xml">
+                <field name="calendar_date" position="before">
+                    <field name="sequence" widget="handle"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

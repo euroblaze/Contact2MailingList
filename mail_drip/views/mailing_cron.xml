@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="mail_drip_cron_job" model="ir.cron">
+            <field name="name">Mail Drip Cron Job</field>
+            <field name="model_id" ref="mass_mailing.model_mailing_contact"/>
+            <field name="state">code</field>
+            <field name="code">model.mail_cron_job()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name='interval_number'>10</field>
+            <field name='interval_type'>minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

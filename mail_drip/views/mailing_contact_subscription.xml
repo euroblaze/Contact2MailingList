@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="mailing_contact_view_from_mail_drip" model="ir.ui.view">
+            <field name="name">mailing.contact.view.from.mail.drip</field>
+            <field name="model">mailing.contact</field>
+            <field name="inherit_id" ref="mass_mailing.mailing_contact_view_form"/>
+            <field name="arch" type="xml">
+                <field name="subscription_list_ids" position="replace">
+                    <field name="subscription_list_ids">
+                        <tree editable="bottom">
+                            <field name="list_id"/>
+                            <field name="unsubscription_date"/>
+                            <field name="opt_out"/>
+                            <field name="last_email_sent_sequence"/>
+                            <field name="last_email_sent_date" widget="datetime"/>
+                        </tree>
+                    </field>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>
