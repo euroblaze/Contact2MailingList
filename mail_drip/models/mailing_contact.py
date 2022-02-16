@@ -23,7 +23,6 @@ class MailingContact(models.Model):
                             "email_from": self.env.user.email_formatted,
                             "email_to": record.email,
                             "body_html": mail_to_send.body_arch,
-                            'auto_delete': True,
                             'state': 'outgoing'
                         }
                         mail = self.env["mail.mail"].create(mail_values)
@@ -64,7 +63,6 @@ class MailingContact(models.Model):
                                 "email_from": self.env.user.email_formatted,
                                 "email_to": contact.email,
                                 "body_html": mail_to_send.body_arch,
-                                'auto_delete': True,
                                 'state': 'outgoing',
                             }
                             mail = self.env["mail.mail"].create(mail_values)
