@@ -8,11 +8,24 @@ from odoo.http import request
 class MailingContact(models.Model):
     _inherit = 'mailing.contact'
 
+    partner_id = fields.Many2one('res.partner', string='Partner')
+
+    @api.onchange('partner_id')
+    def save_partner_data(self):
+        for record in self:
+            if record.partner_id:
+                record.name = record.partner_id.name
+                record.email = record.partner_id.email
+                record.title_id = record.partner_id.title.id
+
     @api.constrains('subscription_list_ids')
     def send_first_mail_in_sequence(self):
         mails = self.env['mailing.mailing'].search([])
         for record in self:
             for subscription in record.subscription_list_ids:
+                if subscription.list_id != subscription.last_sent_mailing_list:
+                    subscription.first_email_sent = False
+                    subscription.last_sent_mailing_list = subscription.list_id.id
                 if not subscription.first_email_sent:
                     mails_to_send = mails.filtered(lambda l: subscription.list_id.id in l.contact_list_ids.ids) \
                         .sorted(key='sequence', reverse=False)

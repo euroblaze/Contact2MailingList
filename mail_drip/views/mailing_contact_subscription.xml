@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-
         <record id="mailing_contact_view_from_mail_drip" model="ir.ui.view">
             <field name="name">mailing.contact.view.from.mail.drip</field>
             <field name="model">mailing.contact</field>
@@ -18,8 +17,10 @@
                         </tree>
                     </field>
                 </field>
+                <xpath expr='//label[@for="email"]' position="before">
+                    <field name="partner_id" widget="many2one_avatar"/>
+                </xpath>
             </field>
         </record>
-
     </data>
 </odoo>

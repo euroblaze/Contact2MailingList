@@ -27,7 +27,8 @@
         'views/mailing_mailing.xml',
         'views/mailing_contact_subscription.xml',
         'views/mailing_list.xml',
-        'views/mailing_cron.xml'
+        'views/mailing_cron.xml',
+        'views/res_partner.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
