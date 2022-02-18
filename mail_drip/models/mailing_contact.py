@@ -57,7 +57,7 @@ class MailingContact(models.Model):
                 time = subscription.list_id.mail_interval
                 last_email_sent_date = subscription.last_email_sent_date
                 sequence = subscription.last_email_sent_sequence + 1
-                if time and time > 0 and type_time:
+                if time and time > 0 and type_time and last_email_sent_date:
                     if type_time == 'minutes':
                         result = last_email_sent_date + timedelta(minutes=time)
                     elif type_time == 'hours':

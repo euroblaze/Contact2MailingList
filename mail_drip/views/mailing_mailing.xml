@@ -7,9 +7,9 @@
             <field name="model">mailing.mailing</field>
             <field name="inherit_id" ref="mass_mailing.view_mail_mass_mailing_tree"/>
             <field name="arch" type="xml">
-                <field name="calendar_date" position="before">
+                <xpath expr="//field[1]" position="before">
                     <field name="sequence" widget="handle"/>
-                </field>
+                </xpath>
             </field>
         </record>
 
