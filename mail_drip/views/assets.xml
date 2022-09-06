@@ -1,0 +1,10 @@
+<odoo>
+
+    <template id="mailing_assets_frontend" name="Mail drip frontend"
+              inherit_id="web.assets_frontend">
+        <xpath expr="//script[last()]" position="after">
+            <script type="text/javascript" src="/mail_drip/static/src/js/mailing_mailing.js"/>
+        </xpath>
+    </template>
+
+</odoo>

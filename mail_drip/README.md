@@ -1,6 +1,6 @@
 # Mail Drip
 ## About Mail Drip
-
+    
 This module is based on Email Marketing module.
 
 1. Create mailing lists, add users to them, remove them and delete them.

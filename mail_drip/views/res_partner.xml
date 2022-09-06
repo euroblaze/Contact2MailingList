@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+
     <record id="view_partner_form_custom" model="ir.ui.view">
         <field name="name">res.partner.custom.view.form</field>
         <field name="model">res.partner</field>
@@ -10,4 +10,5 @@
             </xpath>
         </field>
     </record>
+
 </odoo>

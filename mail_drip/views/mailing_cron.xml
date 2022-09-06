@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
 
         <record id="mail_drip_cron_job" model="ir.cron">
             <field name="name">Mail Drip Cron Job</field>
@@ -14,5 +12,4 @@
             <field name="doall" eval="False"/>
         </record>
 
-    </data>
 </odoo>

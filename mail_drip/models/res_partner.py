@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import pytz
-from datetime import datetime
-from odoo.http import request
-from odoo import models, fields, api
+from odoo import models, fields
 
 
 class ResPartner(models.Model):

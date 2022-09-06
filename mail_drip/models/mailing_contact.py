@@ -52,6 +52,7 @@ class MailingContact(models.Model):
         mails = self.env['mailing.mailing'].search([])
         for contact in mailing_contacts:
             for subscription in contact.subscription_list_ids:
+                first_mail_time = subscription.list_id.first_mail_datetime
                 result = None
                 type_time = subscription.list_id.mail_interval_type
                 time = subscription.list_id.mail_interval
@@ -66,20 +67,22 @@ class MailingContact(models.Model):
                         result = last_email_sent_date + timedelta(days=time)
                     user_tz = request.env.user.tz or pytz.utc
                     date_now = datetime.now(pytz.timezone(user_tz)).replace(tzinfo=None)
-                    if result <= date_now:
-                        mails_to_send = mails.filtered(lambda l: subscription.list_id.id in l.contact_list_ids.ids) \
-                            .sorted(key='sequence', reverse=False)
-                        if len(mails_to_send) - 1 >= sequence:
-                            mail_to_send = mails_to_send[sequence]
-                            mail_values = {
-                                "subject": mail_to_send.subject,
-                                "email_from": self.env.user.email_formatted,
-                                "email_to": contact.email,
-                                "body_html": mail_to_send.body_arch,
-                                'state': 'outgoing',
-                            }
-                            mail = self.env["mail.mail"].create(mail_values)
-                            mail.send(raise_exception=False)
-                            subscription.last_email_sent_date = datetime.now(pytz.timezone(user_tz)).replace(
-                                tzinfo=None)
-                            subscription.last_email_sent_sequence = sequence
+                    if first_mail_time == date_now:
+                        if result <= date_now:
+                            mails_to_send = mails.filtered(lambda l: subscription.list_id.id in l.contact_list_ids.ids) \
+                                .sorted(key='sequence', reverse=False)
+                            if len(mails_to_send) - 1 >= sequence:
+                                mail_to_send = mails_to_send[sequence]
+                                mail_values = {
+                                    "subject": mail_to_send.subject,
+                                    "email_from": mails_to_send.email_from,
+                                    "reply_to": mails_to_send.reply_to,
+                                    "email_to": contact.email,
+                                    "body_html": mail_to_send.body_arch,
+                                    'state': 'outgoing',
+                                }
+                                mail = self.env["mail.mail"].create(mail_values)
+                                mail.send(raise_exception=False)
+                                subscription.last_email_sent_date = datetime.now(pytz.timezone(user_tz)).replace(
+                                    tzinfo=None)
+                                subscription.last_email_sent_sequence = sequence

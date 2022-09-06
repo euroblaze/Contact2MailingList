@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
 
         <record id="view_mail_mass_mailing_tree_mail_drip" model="ir.ui.view">
             <field name="name">mailing.mailing.view.tree.mail.drip</field>
@@ -13,5 +11,4 @@
             </field>
         </record>
 
-    </data>
 </odoo>
