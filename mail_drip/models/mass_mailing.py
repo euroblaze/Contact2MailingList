@@ -8,6 +8,40 @@ class MailingMailing(models.Model):
     _order = 'sequence asc'
 
     sequence = fields.Integer(help='Used to order the mails')
+    mail_interval_type = fields.Selection(
+        [('minutes', 'Minutes'), ('hours', 'Hours'), ('days', 'Days')],
+        string='Mail Interval Type'
+    )
+    mail_interval = fields.Integer(
+        default=0,
+        string='Mail Interval'
+    )
+    first_mail_datetime = fields.Datetime(
+        string="First Mail | Date Hour", readonly=False, store=True)
+
+    @api.onchange('mail_interval', 'first_mail_datetime', 'mail_interval_type')
+    def onchange_mail_interval(self):
+        action = self.env['ir.cron'].search([('name', '=', 'Mail Drip Cron Job'), ('active', '=', 'True')], limit=1)
+        # action = self.env["ir.cron"]._for_xml_id("mass_mailing.mail_drip_cron_job")
+        action.update({
+            'nextcall': self.first_mail_datetime,
+            'interval_number': self.mail_interval,
+            'interval_type': self.mail_interval_type
+        })
+
+    def name_get(self):
+        res = []
+        for mail in self:
+            if mail.id == 6:
+                name = 'Settings'
+                res.append((mail.id, name))
+            else:
+                res.append((mail.id, mail.name))
+        return res
+
+    def get_mailing_domain(self):
+        for record in self:
+            return record.mailing_domain
 
     def max_sequence_mailing(self):
         self.env.cr.execute("SELECT MAX(Sequence) FROM mailing_mailing")

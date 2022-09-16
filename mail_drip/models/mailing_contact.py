@@ -79,7 +79,9 @@ class MailingContact(models.Model):
                                 'state': 'outgoing',
                             }
                             mail = self.env["mail.mail"].create(mail_values)
+                            print(mail)
                             mail.send(raise_exception=False)
+                            print(mail)
                             subscription.last_email_sent_date = datetime.now(pytz.timezone(user_tz)).replace(
                                 tzinfo=None)
                             subscription.last_email_sent_sequence = sequence

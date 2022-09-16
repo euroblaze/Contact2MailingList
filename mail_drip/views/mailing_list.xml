@@ -1,18 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-
         <record id="mass_mailing_list_mail_drip" model="ir.ui.view">
             <field name="name">mass.mailing.list.mail.drip</field>
             <field name="model">mailing.list</field>
             <field name="inherit_id" ref="mass_mailing.mailing_list_view_form"/>
             <field name="arch" type="xml">
-                <field name='is_public' position="after">
-                    <field name="mail_interval"/>
-                    <field name="mail_interval_type"/>
+                <button name="action_view_contacts" position="before">
+                    <button name="drip_settings" string="Settings" type="object" icon="fa-cog" class="oe_stat_button"/>
+                </button>
+                <field name='is_public' position="attributes">
+                    <attribute name="invisible" separator=" " add="True"/>
                 </field>
             </field>
         </record>
-
+        <record id="mail_mass_mailing_form_drip" model="ir.ui.view">
+            <field name="name">view.mail.mass.mailing.form.drip</field>
+            <field name="model">mailing.mailing</field>
+            <field name="inherit_id" ref="mass_mailing.view_mail_mass_mailing_form"/>
+            <field name="arch" type="xml">
+                <page name="settings" position="attributes">
+                    <attribute name="class" separator=" " add="d-none"/>
+                </page>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_mail_mass_mailing_form_drip">
+            <field name="name">view.mail.mass.mailing.form.drip</field>
+            <field name="model">mailing.mailing</field>
+            <field name="arch" type="xml">
+                <form duplicate="0">
+                    <header style="min-height:31px;">
+                        <button name="action_launch" type="object" class="oe_highlight btn-secondary"
+                                string="Send Next Mail Drip Now"
+                                confirm="This will send the email to all recipients. Do you still want to proceed ?"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="Email Content">
+                                <field name="user_id" widget="many2one_avatar_user" domain="[('share', '=', False)]"/>
+                                <field name="email_from"/>
+                                <label for="reply_to"/>
+                                <div name="reply_to_details">
+                                    <field name="reply_to_mode" widget="radio"/>
+                                    <field name="reply_to"/>
+                                </div>
+                                <field name="first_mail_datetime"
+                                       string="First Mail | Date Hour"
+                                       required="False"/>
+                                <field name="mail_interval"/>
+                                <field name="mail_interval_type"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
     </data>
 </odoo>
