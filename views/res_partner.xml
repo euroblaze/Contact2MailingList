@@ -1,0 +1,37 @@
+<odoo>
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[last()]" position="after">
+                <page name="drip" string="Drip">
+                    <label for="mailing_lists_ids" string="Mailing List"/>
+                    <field name="mailing_lists_ids" widget="many2many_tags" options="{'no_open': True, 'no_create': True}"/>
+                    <br/>
+                    <br/>
+                    <field name="contact" invisible="1"/>
+                    <field name="mailings_ids">
+                        <tree editable="bottom">
+                            <field name="contact_id" string="Contact"/>
+                            <field name="list_id" string="Mailing List Campaign" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="opt_out"/>
+                            <field name="unsubscription_date"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mailing_contact_view_form" model="ir.ui.view">
+        <field name="model">mailing.contact</field>
+        <field name="inherit_id" ref="mass_mailing.mailing_contact_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr='//label[@for="email"]' position="before">
+                <field name="partner_id"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
+
