@@ -25,6 +25,15 @@ class MailingContactSubscription(models.Model):
                 })
         return super().unlink()
 
+    @api.constrains('contact_id', 'list_id')
+    def _check_duplicate(self):
+        for record in self:
+            if record.contact_id and record.list_id:
+                exists = self.search([('contact_id', '=', record.contact_id.id), ('list_id', '=', record.list_id.id)],
+                                     limit=1)
+                if exists:
+                    record.sudo().unlink()
+
 
 class MailingContact(models.Model):
     _inherit = "mailing.contact"
@@ -47,6 +56,16 @@ class ResPartner(models.Model):
     mailings_ids = fields.Many2many('mailing.contact.subscription')
     mailing_lists_ids = fields.Many2many('mailing.list')
     contact = fields.Boolean(compute='_update_contact')
+
+    # def unlink(self):
+    #     for record in self:
+    #         contact = self.env['mailing.contact'].sudo().search([
+    #             ('partner_id', '=', record.id)
+    #         ], limit=1)
+    #         partners = self.search([('email', '=', contact.email)])
+    #         if contact and len(partners) == 1:
+    #             contact.unlink()
+    #     return super().unlink()
 
     @api.constrains('title')
     def check_partner(self):
@@ -128,3 +147,19 @@ class ResPartner(models.Model):
                             contact.list_ids = [(3, subscription.list_id.id)]
                             record.mailing_lists_ids = [(3, subscription.list_id.id)]
                             subscription.unlink()
+
+
+class InheritMergePartnerAutomatic(models.TransientModel):
+    _inherit = 'base.partner.merge.automatic.wizard'
+
+    def _merge(self, partner_ids, dst_partner=None, extra_checks=True):
+        contact = self.env['mailing.contact'].sudo().search([
+            ('partner_id', '=', dst_partner.id)
+        ], limit=1)
+        contacts = self.env['mailing.contact'].sudo().search([
+            ('partner_id', 'in', [p for p in partner_ids if p != dst_partner.id]),
+            ('email', '!=', contact.email)
+        ])
+        super()._merge(partner_ids, dst_partner, extra_checks)
+        contacts.sudo().unlink()
+
